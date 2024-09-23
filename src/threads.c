@@ -45,9 +45,10 @@ void main_thread(void *params)
 
 int main(void)
 {
-    vTaskDelay(5000);
     stdio_init_all();
     hard_assert(cyw43_arch_init() == PICO_OK);
+    sleep_ms(10000);
+    printf("starting\n");
     on = false;
     counter = 0;
     TaskHandle_t main, side;
