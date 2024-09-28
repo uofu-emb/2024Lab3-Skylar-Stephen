@@ -39,6 +39,7 @@
     "raspberry-pi-pico.python3Path": "/usr/bin/python3",
     "files.associations": {
         "multicore.h": "c",
-        "cyw43_arch.h": "c"
+        "cyw43_arch.h": "c",
+        "stdio.h": "c"
     }
 }

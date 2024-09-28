@@ -10,6 +10,14 @@
 #include <pico/multicore.h>
 #include <pico/cyw43_arch.h>
 #include "unity_config.h"
+#include "loops.h"
+
+#define TASK_1_PRIORITY      ( tskIDLE_PRIORITY + 1UL )
+#define TASK_1_STACK_SIZE configMINIMAL_STACK_SIZE
+
+#define TASK_2_PRIORITY      ( tskIDLE_PRIORITY + 1UL )
+#define TASK_2_STACK_SIZE configMINIMAL_STACK_SIZE
+
 
 void setUp(void) {}
 
@@ -52,10 +60,49 @@ void test_loop2(void)
 
 }
 
+
+
+
+
+
+
 void test_deadlock1(void)
 {
-    deadlock1();
-    sleep_ms(3000);
+    
+    sleep_ms(5000);
+    printf("starting\n");
+
+
+
+    //create semaphores and count variable to pass to threads
+    struct threadData td;
+    td.semaphore1 = xSemaphoreCreateCounting(1, 1);
+    td.semaphore2 = xSemaphoreCreateCounting(1, 1);
+    td.count1 = 4;
+    td.count2 = 2;
+
+    printf("creating threads\n");
+
+    TaskHandle_t t1, t2;
+    BaseType_t x1 = xTaskCreate(thread1, "Thread1",
+                TASK_1_STACK_SIZE, (void *) &td, TASK_2_PRIORITY, &t1);
+    BaseType_t x2 = xTaskCreate(thread2, "Thread2",
+                TASK_2_STACK_SIZE, (void *) &td, TASK_2_PRIORITY, &t2);
+
+    printf("done creating threads\n");
+
+    //vTaskStartScheduler();
+    vTaskDelay(1000);
+    printf("delay finished\n");
+    //vTaskSuspend(t1);
+    //vTaskSuspend(t2);
+    printf("running tests\n");
+    TEST_ASSERT_TRUE_MESSAGE(uxSemaphoreGetCount(td.semaphore1) == 0,"fail");
+    TEST_ASSERT_TRUE_MESSAGE(uxSemaphoreGetCount(td.semaphore2) == 0,"fail");
+    TEST_ASSERT_TRUE_MESSAGE(uxSemaphoreGetCount(td.count1) == 5,"fail");
+    TEST_ASSERT_TRUE_MESSAGE(uxSemaphoreGetCount(td.count2) == 3,"fail");
+
+	return 0;
 
 }
 
