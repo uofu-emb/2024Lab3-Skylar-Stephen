@@ -143,17 +143,15 @@ void test_deadlock1(void)
     vTaskDelete(t1);
     vTaskDelete(t2);
 
-    printf("starting tests\n");
-    int s1count = uxSemaphoreGetCount(td.semaphore1);
-    int s2count = uxSemaphoreGetCount(td.semaphore2);
-    printf("starting tests 2\n");
-    //TEST_ASSERT_TRUE_MESSAGE(1 == 0,"fail");
+
+
+
     TEST_ASSERT_EQUAL(uxSemaphoreGetCount(td.semaphore1), 0);
     TEST_ASSERT_EQUAL(uxSemaphoreGetCount(td.semaphore1), 0);
-    printf("starting tests 3\n");
+
     TEST_ASSERT_EQUAL(td.count1, 5);
     TEST_ASSERT_EQUAL(td.count2, 3);
-    //printf("finished tests\n");
+
 }
 
 
