@@ -20,26 +20,43 @@ void test_loop1()
     int count = 0;
     SemaphoreHandle_t semaphore;
     semaphore = xSemaphoreCreateCounting(1, 1);
-    
-    xSemaphoreTake(semaphore, 5000);
-
-    loop1(semaphore, &count, 0);
-    
-    //TEST_ASSERT_TRUE_MESSAGE(xSemaphoreTake(semaphore, 0) == pdFALSE,"fail");
+    //Take semaphore, then run code and make sure count was not incremented 
+    xSemaphoreTake(semaphore, 0);
+    loop1(semaphore, &count, 10);
     TEST_ASSERT_TRUE_MESSAGE(count == 0,"fail");
 
+    //Return semaphore, run code and verify it ran
     xSemaphoreGive(semaphore);
-
-    loop1(semaphore, &count, 6000);
+    loop1(semaphore, &count, 0);
     TEST_ASSERT_TRUE_MESSAGE(count == 1,"fail");
 }
 
 void test_loop2(void)
 {
-    int x = 30;
-    int y = 6;
-    int z = x / y;
-    TEST_ASSERT_TRUE_MESSAGE(z == 5, "Multiplication of two integers returned incorrect value.");
+    hard_assert(cyw43_arch_init() == PICO_OK);
+    int count = 0;
+    int on = 0;
+    SemaphoreHandle_t semaphore;
+    semaphore = xSemaphoreCreateCounting(1, 1);
+    //Take semaphore, then run code and make sure count was not incremented and on was not changed
+    xSemaphoreTake(semaphore, 0);
+    loop2(semaphore, &count, &on);
+    TEST_ASSERT_TRUE_MESSAGE(count == 0,"fail");
+    TEST_ASSERT_TRUE_MESSAGE(on == 0,"fail");
+
+    //Return semaphore, run code and verify it ran
+    xSemaphoreGive(semaphore);
+    loop2(semaphore, &count, &on);
+    TEST_ASSERT_TRUE_MESSAGE(count == 1,"fail");
+    TEST_ASSERT_TRUE_MESSAGE(on == 1,"fail");
+
+}
+
+void test_deadlock1(void)
+{
+    deadlock1();
+    sleep_ms(3000);
+
 }
 
 int main (void)
@@ -50,6 +67,7 @@ int main (void)
     UNITY_BEGIN();
     RUN_TEST(test_loop1);
     RUN_TEST(test_loop2);
+    RUN_TEST(test_deadlock1);
     sleep_ms(5000);
     return UNITY_END();
 }

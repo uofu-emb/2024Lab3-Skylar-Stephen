@@ -9,3 +9,4 @@
 
 void loop1(SemaphoreHandle_t semaphore, int *counter, int ticks);
 void loop2(SemaphoreHandle_t semaphore, int *counter, int *on);
+void deadlock1();

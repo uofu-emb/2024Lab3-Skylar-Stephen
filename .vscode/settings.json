@@ -38,6 +38,7 @@
     "raspberry-pi-pico.ninjaPath": "${HOME}/.pico-sdk/ninja/v1.12.1/ninja",
     "raspberry-pi-pico.python3Path": "/usr/bin/python3",
     "files.associations": {
-        "multicore.h": "c"
+        "multicore.h": "c",
+        "cyw43_arch.h": "c"
     }
 }
