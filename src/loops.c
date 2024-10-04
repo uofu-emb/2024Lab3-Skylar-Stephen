@@ -16,7 +16,7 @@
 
 
 
-
+//This function takes a semaphore and increments a count variable
 void loop1(SemaphoreHandle_t semaphore, int *counter, int ticks) {
     if(xSemaphoreTake(semaphore, ticks) == pdTRUE){
             *counter = *counter + 1;
@@ -25,6 +25,7 @@ void loop1(SemaphoreHandle_t semaphore, int *counter, int ticks) {
         }
 }
 
+//This function takes a semaphore and increments a count variable and turns on/off an LED
 void loop2(SemaphoreHandle_t semaphore, int *counter, int *on) {
     if(xSemaphoreTake(semaphore, 1000) == pdTRUE){
             *counter = *counter + 1;
