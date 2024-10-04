@@ -1,0 +1,25 @@
+use xed to open a document with text editor
+
+create readme, local git repository, commit readme, move to branch main, add remote repository, and push main:
+
+echo "# test" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:amplifiedcactus/test.git
+git push -u origin main
+
+how to get files from remote repository to local one:
+git clone git@github.com:amplifiedcactus/test.git
+cd test
+git checkout main (to switch to a different branch)
+
+sudo minicom -D /dev/ttyACM0 -b 115200
+
+picotool load -f build/src/hello_freertos.elf
+picotool reboot
+
+cmake -B build -S .
+cmake --build build
+

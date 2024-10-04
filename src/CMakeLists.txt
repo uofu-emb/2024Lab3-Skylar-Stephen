@@ -1,6 +1,7 @@
 # This is t` main binary. List your C files here.
 add_executable(threads
     threads.c
+    loops.c
     )
 
 pico_set_program_name(threads "test")
@@ -8,7 +9,7 @@ pico_set_program_version(threads "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB.
 # These are mutually exclusive, only set one.
-# pico_enable_stdio_uart(threads 0)
+#pico_enable_stdio_uart(threads 0)
 pico_enable_stdio_usb(threads 1)
 
 # Add the libraries to the build
